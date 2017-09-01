@@ -51,7 +51,7 @@ function matchAudio(ytRequest) {
   function skipEmbed(tab){
     if (tab.url.indexOf(".youtube.com/") == -1) skip = true; else skip = false;
   }
-	browser.tabs.query({currentWindow: true}).then(tabs => browser.tabs.get(ytRequest.tabId)).then(tab => { skipEmbed(tab); });
+  browser.tabs.query({currentWindow: true}).then(tabs => browser.tabs.get(ytRequest.tabId)).then(tab => { skipEmbed(tab); });
   if (skip == true){return{cancel: false};}
   //#endregion
 
