@@ -1,4 +1,6 @@
-YoutubeAUDIO is a Firefox extension that when active enables you to listen to youtube videos without video content being downloaded.
+
+
+![](https://raw.githubusercontent.com/sheddup/YoutubeAUDIO/master/icons/extensionLogo.png) : <b>YoutubeAUDIO</b> is a Firefox extension that enables you to listen to youtube videos without video content being downloaded.
 
 Known issues:
 - embedded videos not supported, embedded videos should play like normal
