@@ -1,0 +1,3 @@
+- active in 1 tab only feature
+- support youtube embeds
+- make image overlay compatible with Youtube High Definition extension
