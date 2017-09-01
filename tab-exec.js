@@ -47,7 +47,7 @@ function playerImage(){
   }
 
   window.onresize = resizer;
-  theaterBtn.onclick = function(){setTimeout(resizer, 500)};
+  theaterBtn.onclick = function(){setTimeout(resizer, 300)};
 }
 
 /* initial code to get video element, set the source url and then start playing
