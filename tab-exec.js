@@ -59,7 +59,9 @@ function initYTP(){
     playerImage();
   }
   var ytVideo = document.getElementsByTagName("video")[0];
-  if (ytVideo == null) console.log("couldn't load video element. YT embeds not supported yet");
+  if (ytVideo == null){
+    console.log("couldn't load video element. YT embeds not supported yet");
+  }
   ytVideo.onloadstart = YTLoadStart();
 }
 

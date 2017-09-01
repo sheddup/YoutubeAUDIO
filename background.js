@@ -7,15 +7,12 @@ function onError(error) {
 function toggleListener(tabDetails){
   function checkReload(clickedTab){
     //#region Check active tab for youtube url, reload tab if youtube url is found
-    var url = clickedTab.url;
-    url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-    if(url[2] !== undefined) {
+    if(clickedTab.url.indexOf(".youtube.com/") != -1) {
       browser.tabs.reload(clickedTab.id, {bypassCache: true});
       console.log("user toggled from youtube tab, reloading tab");
     }
     else {
       console.log("user toggled outside of a youtube tab, not reloading tab");
-      return;
     }
     //#endregion
   }
@@ -45,11 +42,20 @@ function execTab(requestedTab, strippedURL){
   });
 }
 
-/* match youtube requests for webm/mp4 audio, blocking any video or other requests
-   parsed url is marked with bypasscheck parameter then call execTab with audio source url and relevant tab id */
+/* match youtube requests for webm/mp4 audio, blocking any video
+   parsed url is marked with bypasscheck parameter then execTab is called with audio source url and relevant tab id
+   skips requests outside of .youtube.com */
+var skip = false;
 function matchAudio(ytRequest) {
-	var youtubeURL = unescape(ytRequest.url);
+  //#region mess of code to skip embedded youtube requests
+  function skipEmbed(tab){
+    if (tab.url.indexOf(".youtube.com/") == -1) skip = true; else skip = false;
+  }
+	browser.tabs.query({currentWindow: true}).then(tabs => browser.tabs.get(ytRequest.tabId)).then(tab => { skipEmbed(tab); });
+  if (skip == true){return{cancel: false};}
+  //#endregion
 
+	var youtubeURL = unescape(ytRequest.url);
   if (youtubeURL.indexOf("bypasscheck") != -1){
     return { cancel: false};
   }
