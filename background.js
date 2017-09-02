@@ -55,7 +55,7 @@ function matchAudio(ytRequest) {
   if (skip == true){return{cancel: false};}
   //#endregion
 
-	var youtubeURL = unescape(ytRequest.url);
+  var youtubeURL = unescape(ytRequest.url);
   if (youtubeURL.indexOf("bypasscheck") != -1){
     return { cancel: false};
   }
