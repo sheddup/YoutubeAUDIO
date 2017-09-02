@@ -4,7 +4,7 @@ function onError(error) {
 }
 
 /* handle browseraction click and toggle webrequest listener*/
-function toggleListener(tabDetails){
+function toggleListener(tabDetails = false){
   function checkReload(clickedTab){
     //#region Check active tab for youtube url, reload tab if youtube url is found
     if(clickedTab.url.indexOf(".youtube.com/") != -1) {
@@ -20,6 +20,7 @@ function toggleListener(tabDetails){
     browser.webRequest.onBeforeRequest.removeListener(matchAudio);
     browser.browserAction.setIcon({path: "icons/ytaudioOFF32.png"});
     browser.browserAction.setTitle({title: "YoutubeAUDIO Disabled"});
+    browser.storage.local.set({ save_state: "disabled" });
   }
   else{
     // listen for all youtube videoplayback requests
@@ -27,8 +28,9 @@ function toggleListener(tabDetails){
       {urls: ["https://*.googlevideo.com/videoplayback*"]}, ["blocking"] );
     browser.browserAction.setIcon({path: "icons/ytaudioON32.png"});
     browser.browserAction.setTitle({title: "YoutubeAUDIO Enabled"});
+    browser.storage.local.set({ save_state: "enabled" });
   }
-  if (tabDetails == "firstrun") return; else checkReload(tabDetails);
+  if (!tabDetails) return; else checkReload(tabDetails);
 }
 
 /* execute tab-exec.js in tab id of webrequest, passing the audio source URL*/
@@ -80,5 +82,13 @@ function matchAudio(ytRequest) {
 //browser action click event, callback toggles webrequest listener and browseraction icons
 browser.browserAction.onClicked.addListener(toggleListener);
 
-//enable listener on first run, 'firstrun' param skips reload check
-toggleListener("firstrun")
+//load previous enabled/disabled state
+function loadState(storage){
+  switch (storage.save_state) {
+    case "disabled":
+      break;
+    default:
+      toggleListener();
+  }
+}
+browser.storage.local.get("save_state").then(loadState, onError);
