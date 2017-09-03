@@ -20,34 +20,20 @@ function setImage(url, img){
   http.send();
 }
 
-/* overlay image on the player and handle resize events */
+/* overlay image on the player with object-fit style to handle resizing */
 function playerImage(){
-  var movie_player = document.getElementById("movie_player").wrappedJSObject;
+  var vid_container = document.querySelector(".html5-video-container");
+  var movie_player = document.querySelector(".html5-video-player").wrappedJSObject;
   var imgElement = document.getElementById("playerOverlay");
-  var theaterBtn = document.getElementsByClassName("ytp-size-button ytp-button")[0];
+  var theaterBtn = document.querySelector(".ytp-size-button");
 
   if (imgElement == null){
     var imgElement = document.createElement("IMG");
     imgElement.id = "playerOverlay";
-    setImage(movie_player.baseURI, imgElement);
-    imgElement.width = movie_player.getPlayerSize().width;
-    imgElement.height = movie_player.getPlayerSize().height;
-    movie_player.appendChild(imgElement);
-  } else {
-    setImage(movie_player.baseURI, imgElement);
-    imgElement.width = movie_player.getPlayerSize().width;
-    imgElement.height = movie_player.getPlayerSize().height;
-    movie_player.appendChild(imgElement);
   }
-
-  function resizer(){
-    var [newWidth, newHeight] = [movie_player.getPlayerSize().width, movie_player.getPlayerSize().height];
-    imgElement.width = newWidth;
-    imgElement.height = newHeight;
-  }
-
-  window.onresize = resizer;
-  theaterBtn.onclick = function(){setTimeout(resizer, 500)};
+  setImage(movie_player.baseURI, imgElement);
+  imgElement.style = "height: 100%; width: 100%; object-fit: fill";
+  vid_container.insertBefore(imgElement, vid_container.childNodes[0]);
 }
 
 /* initial code to get video element, set the source url and then start playing
@@ -59,9 +45,6 @@ function initYTP(){
     playerImage();
   }
   var ytVideo = document.getElementsByTagName("video")[0];
-  if (ytVideo == null){
-    console.log("couldn't load video element. YT embeds not supported yet");
-  }
   ytVideo.onloadstart = YTLoadStart();
 }
 

@@ -9,10 +9,11 @@ function toggleListener(tabDetails = false){
     //#region Check active tab for youtube url, reload tab if youtube url is found
     if(clickedTab.url.indexOf(".youtube.com/") != -1) {
       browser.tabs.reload(clickedTab.id, {bypassCache: true});
-      console.log("user toggled from youtube tab, reloading tab");
+      //user toggled from youtube tab, reloading tab
     }
     else {
-      console.log("user toggled outside of a youtube tab, not reloading tab");
+      return;
+      //user toggled outside of a youtube tab, not reloading tab
     }
     //#endregion
   }

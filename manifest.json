@@ -23,7 +23,8 @@
     "webRequest",
     "webRequestBlocking",
     "storage",
-    "<all_urls>"
+    "*://*.youtube.com/*",
+    "*://*.googlevideo.com/*"
   ],
 
   "background": {
