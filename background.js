@@ -69,14 +69,14 @@ function matchAudio(ytRequest) {
 			browser.tabs.query({currentWindow: true})
 			.then(tabs => browser.tabs.get(ytRequest.tabId))
 			.then(tab => { execTab(tab, strippedURL); });
-      return { cancel: false };
+			return { cancel: false };
 
-		} else {
-			return { cancel: true };
-		}
-	}
+    } else {
+      return { cancel: true };
+    }
+  }
   else {
-		return { cancel: true };
+    return { cancel: true };
   }
 }
 
