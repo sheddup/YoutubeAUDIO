@@ -73,7 +73,7 @@ function matchAudio(ytRequest) {
 
 		} else {
 			return { cancel: true };
-    }
+		}
 	}
   else {
 		return { cancel: true };
