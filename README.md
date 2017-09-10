@@ -4,7 +4,7 @@
 
 Known issues:
 - Embedded videos not supported(yet), embedded videos should play like normal
-- Image overlay can clash with the add-on 'Youtube High Definition' when the video size preference is set to 'full page', this doesn't appear to be an issue with the new youtube layout
+- Image overlay can clash with the add-on 'Youtube High Definition' when the video size preference is set to 'full page'
 - You need an adblocker otherwise video ads break the extension(looking into a fix)
 
 Unknown issues:
