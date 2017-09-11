@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "YoutubeAUDIO",
-  "version": "1.2",
+  "version": "1.4",
   "homepage_url": "https://github.com/sheddup/YoutubeAUDIO",
   "description": "Listen to Youtube, no video data downloaded. Embeds not supported.",
   "author": "sheddup",
@@ -24,12 +24,30 @@
     "webRequestBlocking",
     "storage",
     "*://*.youtube.com/*",
-    "*://*.googlevideo.com/*"
+    "*://*.googlevideo.com/*",
+    "*://*.google.com/*",
+    "*://*.googleapis.com/*",
+    "*://*.googlesyndication.com/*",
+    "*://*.googletagservices.com/*",
+    "*://*.googleadservices.com/*",
+    "*://*.google-analytics.com/*",
+    "*://*.doubleclick.net/*",
+    "*://*.serving-sys.com/*",
+    "*://*.atdmt.com/*",
+    "*://*.innovid.com/*",
+    "*://*.fwmrm.net/*"
   ],
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["ytaudiomain.js", "yt-ads.js"]
   },
+
+  "content_scripts": [{
+    "all_frames": true,
+    "run_at": "document_start",
+    "css": ["inject.css"],
+    "matches": ["*://*.youtube.com/*"]
+  }],
 
   "browser_action": {
     "default_icon": {
