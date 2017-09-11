@@ -24,8 +24,7 @@ function playerImage(){
   vid_container.insertBefore(imgElement, vid_container.childNodes[0]);
 }
 
-/* initial code to get video element, set the source url and then start playing
-   this will fail on embeds */
+/* initial code to get video element, set the source url and then start playing*/
 function initYTP(){
   function YTLoadStart(){
     ytVideo.src = sourceURL;
@@ -35,7 +34,7 @@ function initYTP(){
   var ytVideo = document.getElementsByTagName("video")[0];
   ytVideo.onloadstart = YTLoadStart();
   setTimeout(function(){
-    if (ytVideo.src == "" || ytVideo.src === undefined || ytVideo.src.startsWith("blob:")) {
+    if (ytVideo.src == "" || ytVideo.src == undefined || ytVideo.src.startsWith("blob:")) {
       ytVideo.src = sourceURL;
       ytVideo.play();
     }

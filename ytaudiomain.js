@@ -1,4 +1,5 @@
 function adsRequest(request){
+  /* code in this function modified from MPL 2.0 licensed extension: https://addons.mozilla.org/en-US/firefox/addon/youtube-adblock/versions/0.1.5 */
   function regExpCheck(url){
     var result = /\%22ad|\&adfmt\=|\.atdmt\.|watch7ad\_|\.innovid\.|\/adsales\/|\/adserver\/|\.fwmrm\.net|\/stats\/ads|ad\d-\w*\.swf$|\.doubleclick\.|\/www\-advertise\.|google\-analytics\.|\.googleadservices\.|\.googletagservices\.|\.googlesyndication\.|\.serving\-sys\.com\/|youtube\.com\/ptracking\?|:\/\/.*\.google\.com\/uds\/afs|\/csi\?v\=\d+\&s\=youtube\&action\=|[\=\&\_\-\.\/\?\s]ad[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]ads[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]adid[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]adunit[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]adhost[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]adview[\=\&\_\-\.\/\?\s]|[\=\&\_\-\.\/\?\s]pagead[\=\&\_\-\.\/\?\s\d]|[\=\&\_\-\.\/\?\s]googleads[\=\&\_\-\.\/\?\s]/i.test(url);
     /*  */
@@ -14,10 +15,9 @@ function adsRequest(request){
       return {cancel: false};
     }
   }
-
 }
 
-/*cleanup overlays if user toggles addon outside of a youtube tab*/
+/*gracefully cleanup any existing player overlays*/
 function cleanupOverlay(){
   browser.tabs.query({url: "*://*.youtube.com/*"}).then(tabs => {
     for (let tab of tabs){
@@ -60,11 +60,11 @@ function toggleListener(tabDetails = false){
 }
 
 /* execute youtubepage.js in tab id of webrequest, passing the audio source URL*/
-function execTab(requestedTab, strippedURL){
+function execTab(requestedTabID, strippedURL){
   var jsString = "var sourceURL = "+JSON.stringify(strippedURL)+";";
-  browser.tabs.executeScript(requestedTab.id, {code: jsString}, function(){
+  browser.tabs.executeScript(requestedTabID, {code: jsString}, function(){
     browser.tabs.executeScript(
-      requestedTab.id,
+      requestedTabID,
       {file: "youtubepage.js"}
     )
   });
@@ -75,14 +75,15 @@ function execTab(requestedTab, strippedURL){
    skips requests outside of .youtube.com */
 function matchAudio(ytRequest) {
   var taburl = ytTabList[ytRequest.tabId].url;
-  //#region skipembed
+  var youtubeURL = unescape(ytRequest.url);
+
   if (taburl.indexOf(".youtube.com/") == -1){
+    //dont block requests outside of youtube i.e embedded videos
     return{cancel: false};
   }
-  //#endregion
 
-  var youtubeURL = unescape(ytRequest.url);
   if (youtubeURL.indexOf("bypasscheck") != -1){
+    //dont block parsed audio URL
     return { cancel: false};
   }
 
@@ -99,7 +100,7 @@ function matchAudio(ytRequest) {
 
 		if (youtubeURL.indexOf("&range=0") != -1){
 			var strippedURL = youtubeURL.split("&range=0")[0].concat("&bypasscheck=1");
-      execTab(ytTabList[ytRequest.tabId], strippedURL);
+      execTab(ytRequest.tabId, strippedURL);
 			return { cancel: false };
     }
     else {
@@ -123,7 +124,7 @@ function loadState(storage){
 
 //keep tab url list up to date
 function onUpdatedListener(tabId, changeInfo, tab) {
-    ytTabList[tab.id] = tab;
+    ytTabList[tab.id] = {url: tab.url};
 }
 function onRemovedListener(tabId) {
     delete ytTabList[tabId];
@@ -133,7 +134,7 @@ var ytTabList = {};
 
 browser.tabs.query({}).then(tabs => {
   for (let tab of tabs){
-    ytTabList[tab.id] = tab;
+    ytTabList[tab.id] = {url: tab.url};
   }
 });
 
@@ -141,7 +142,7 @@ browser.tabs.query({}).then(tabs => {
 browser.tabs.onUpdated.addListener(onUpdatedListener);
 browser.tabs.onRemoved.addListener(onRemovedListener);
 
-//browser action click event, callback toggles webrequest listener and browseraction icons
+//browser action to toggle the extension on/off
 browser.browserAction.onClicked.addListener(toggleListener);
 
 browser.storage.local.get("save_state").then(loadState);

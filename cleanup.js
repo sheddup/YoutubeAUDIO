@@ -18,4 +18,5 @@ if (overlay) {
     overlay.remove();
   }
 }
-undefined; //https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/executeScript#Return_value
+//https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/executeScript#Return_value
+undefined;
