@@ -1,2 +1,0 @@
-- active in 1 tab only feature
-- support youtube embeds
