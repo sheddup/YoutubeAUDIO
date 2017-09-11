@@ -39,7 +39,7 @@
   ],
 
   "background": {
-    "scripts": ["ytaudiomain.js", "yt-ads.js"]
+    "scripts": ["ytaudiomain.js"]
   },
 
   "content_scripts": [{

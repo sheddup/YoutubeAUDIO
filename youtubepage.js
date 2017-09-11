@@ -36,8 +36,6 @@ function initYTP(){
   ytVideo.onloadstart = YTLoadStart();
   setTimeout(function(){
     if (ytVideo.src == "" || ytVideo.src === undefined || ytVideo.src.startsWith("blob:")) {
-      console.log("found broken src : " + ytVideo.src);
-      console.log("broken sourceURL : " + sourceURL)
       ytVideo.src = sourceURL;
       ytVideo.play();
     }
