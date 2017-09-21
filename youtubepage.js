@@ -34,11 +34,11 @@ function initYTP(){
   var ytVideo = document.getElementsByTagName("video")[0];
   ytVideo.onloadstart = YTLoadStart();
   setTimeout(function(){
-    if (ytVideo.src == "" || ytVideo.src == undefined || ytVideo.src.startsWith("blob:")) {
+    if (ytVideo.src.startsWith("blob:")) {
       ytVideo.src = sourceURL;
       ytVideo.play();
     }
-  }, 6000);
+  }, 4000);
 }
 
 /* wait till doc is ready to use */

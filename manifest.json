@@ -2,9 +2,9 @@
 
   "manifest_version": 2,
   "name": "YoutubeAUDIO",
-  "version": "1.4",
+  "version": "1.5",
   "homepage_url": "https://github.com/sheddup/YoutubeAUDIO",
-  "description": "Listen to Youtube, no video data downloaded. Embeds not supported.",
+  "description": "Listen to Youtube, no video data downloaded.",
   "author": "sheddup",
 
   "applications": {
@@ -23,6 +23,7 @@
     "webRequest",
     "webRequestBlocking",
     "storage",
+    "notifications",
     "*://*.youtube.com/*",
     "*://*.googlevideo.com/*",
     "*://*.google.com/*",
@@ -48,6 +49,11 @@
     "css": ["inject.css"],
     "matches": ["*://*.youtube.com/*"]
   }],
+
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
 
   "browser_action": {
     "default_icon": {
