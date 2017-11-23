@@ -29,7 +29,9 @@ function initYTP(){
   function YTLoadStart(){
     ytVideo.src = sourceURL;
     ytVideo.oncanplay = function(){ytVideo.play()};
-    playerImage();
+    if (thumbpref) {
+      playerImage();
+    }
   }
   var ytVideo = document.getElementsByTagName("video")[0];
   ytVideo.onloadstart = YTLoadStart();

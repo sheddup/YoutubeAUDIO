@@ -93,7 +93,7 @@ function toggleGlobal(tabDetails = false){
 
 /* execute youtubepage.js in tab id of webrequest, passing the audio source URL*/
 function execTab(requestedTabID, strippedURL){
-  var jsString = "var sourceURL = "+JSON.stringify(strippedURL)+";";
+  var jsString = "var sourceURL = "+JSON.stringify(strippedURL)+";var thumbpref = "+enabledThumb+";";
   browser.tabs.executeScript(requestedTabID, {code: jsString}, function(){
     browser.tabs.executeScript(
       requestedTabID,
@@ -155,7 +155,7 @@ function onRemovedListener(tabId) {
 }
 
 var ytTabList = {};
-
+var enabledThumb = true;
 browser.tabs.query({}).then(tabs => {
   for (let tab of tabs){
     ytTabList[tab.id] = {url: tab.url};
@@ -185,6 +185,7 @@ function loadTabMode(storage){
   switch (loaded_mode) {
     case "tabs":
       browser.browserAction.onClicked.addListener(toggleTab);
+      //restore tab state
       break;
     case "global":
       loadGlobalState();
@@ -213,33 +214,44 @@ function loadTabMode(storage){
     });
   }
 }
-
+function loadedThumb(storage){
+  switch (storage.thumb_pref) {
+    case "disabled":
+      enabledThumb = false;
+      break;
+    default:
+      enabledThumb = true;
+  }
+}
+function changeThumb(msg){
+  console.log(msg);
+  enabledThumb = msg.newval;
+}
 function firstInstall(details) {
   browser.storage.local.get("seen_options").then((obj) => {
     if (!obj.seen_options) {
       browser.runtime.openOptionsPage().then(() => {
         browser.storage.local.set({ seen_options: true });
-        switch (details.reason) {
-          case "install":
-            browser.notifications.create({
-              "type": "basic",
-              "title": "YoutubeAUDIO: Thank you for installing me",
-              "message": "Use this about:addons options page to configure tab behaviour."
-            });
-            break;
-          case "update":
-            browser.notifications.create({
-              "type": "basic",
-              "title": "YoutubeAUDIO: New feature in 1.5",
-              "message": "You can now toggle me for individual tabs.\nUse this about:addons options page to configure tab behaviour."
-            });
-            break;
-          default:
-
+        if (details.reason == "install") {
+          browser.notifications.create({
+            "type": "basic",
+            "title": "YoutubeAUDIO: Thank you for installing me",
+            "message": "Use this about:addons options page to configure behaviour."
+          });
         }
       });
     }
   });
+  if (details.reason == "update") {
+    browser.notifications.create({
+      "type": "basic",
+      "title": "YoutubeAUDIO: New in 1.5.2",
+      "message": "You can now disable thumbnails in the options page."
+    });
+  }
 }
+
 browser.runtime.onInstalled.addListener(firstInstall);
 browser.storage.local.get("tab_mode").then(loadTabMode);
+browser.storage.local.get("thumb_pref").then(loadedThumb);
+browser.runtime.onMessage.addListener(changeThumb);
