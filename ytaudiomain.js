@@ -224,7 +224,6 @@ function loadedThumb(storage){
   }
 }
 function changeThumb(msg){
-  console.log(msg);
   enabledThumb = msg.newval;
 }
 function firstInstall(details) {
@@ -242,13 +241,13 @@ function firstInstall(details) {
       });
     }
   });
-  if (details.reason == "update") {
-    browser.notifications.create({
-      "type": "basic",
-      "title": "YoutubeAUDIO: New in 1.5.2",
-      "message": "You can now disable thumbnails in the options page."
-    });
-  }
+  // if (details.reason == "update") {
+  //   browser.notifications.create({
+  //     "type": "basic",
+  //     "title": "YoutubeAUDIO: New in 1.5.3",
+  //     "message": "You can now disable thumbnails in the options page."
+  //   });
+  // }
 }
 
 browser.runtime.onInstalled.addListener(firstInstall);
