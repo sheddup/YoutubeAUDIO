@@ -40,18 +40,17 @@
   ],
 
   "background": {
-    "scripts": ["ytaudiomain.js"]
+    "scripts": ["scripts/ytaudiomain.js"]
   },
 
   "content_scripts": [{
-    "all_frames": true,
     "run_at": "document_start",
-    "css": ["inject.css"],
+    "css": ["scripts/content_scripts/inject.css"],
     "matches": ["*://*.youtube.com/*"]
   }],
 
   "options_ui": {
-    "page": "options.html",
+    "page": "scripts/options/options.html",
     "browser_style": true
   },
 
