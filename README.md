@@ -4,4 +4,3 @@
 
 Known issues:
 - Embedded videos not supported, embedded videos should play like normal
-- Image overlay can clash with the add-on 'Youtube High Definition' when the video size preference is set to 'full page'
