@@ -2,10 +2,10 @@ iframe[id^=ad_],div[class*="-ads-"],a[href*="/adwords/"],a[href*="doubleclick.ne
   display: none !important;
 }
 
-#header,#search-pva,#premium-yva,#feedmodule-PRO,#video-masthead,#watch-buy-urls,#sub-frame-error,#main-frame-error,#watch7-sidebar-ads,#feed-pyv-container,#shelf-pyv-container,#watch-branded-actions,#watch-channel-brand-div,#homepage-chrome-side-promo,#watch-channel-brand-div-text {
+#watch-buy-urls,#sub-frame-error,#main-frame-error,#watch7-sidebar-ads {
   display: none !important;
 }
 
-.iv-promo,.video-ads,.promoted-videos,.ytp-ad-progress,.ytp-ad-progress-list,.searchView.list-view,.html5-ad-progress-list,.watch-extra-info-right,.watch-extra-info-column,.lohp-pyv-shelf-container,.carousel-offer-url-container,.youtubeSuperLeaderBoardAdHolder,.youtubeSuperLeaderOverallAdArea {
+.iv-promo,.video-ads,.promoted-videos,.ytp-ad-progress,.ytp-ad-progress-list,.html5-ad-progress-list,.youtubeSuperLeaderBoardAdHolder,.youtubeSuperLeaderOverallAdArea {
   display: none !important;
 }
